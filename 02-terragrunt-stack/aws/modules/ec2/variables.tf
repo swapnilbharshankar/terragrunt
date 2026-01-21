@@ -24,3 +24,8 @@ variable name {
   description = "provide a name"
 }
 
+variable tags {
+  type        = map(string)
+  description = "provide a tags"
+}
+

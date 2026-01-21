@@ -30,4 +30,5 @@ inputs = {
   key_name        = dependency.key_pair.outputs.key_pair_name
   subnet_id       = dependency.vpc.outputs.public_subnets[0]
   security_groups = [dependency.security_group.outputs.security_group_id]
+  tags            = include.root.locals.env_vars.common.tags
 }
