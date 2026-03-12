@@ -1,5 +1,5 @@
 terraform {
-    source = "git::https://github.com/swapnilbharshankar/infrastructureascode-terraform//azure/network?ref=azure-0.0.1"
+    source = "git::https://github.com/swapnilbharshankar/infrastructureascode-terraform//azure/network?ref=azure-0.0.2"
 }
 
 include "root" {
@@ -13,6 +13,12 @@ locals {
 }
 
 inputs = {
-    name = local.common_vars.common.name
-    parent_id = "${get_env("TF_VAR_PARENT_ID", "")}"
+    parent_id       = "${get_env("TF_VAR_PARENT_ID", "")}"
+    name            = include.root.locals.env_vars.common.name
+    location        = include.root.locals.region
+    address_space   = include.root.locals.env_vars.vnet.address_space
+    subnets         = {
+        subnet1 = include.root.locals.env_vars.vnet.subnets.private[0]
+        subnet2 = include.root.locals.env_vars.vnet.subnets.public[0]
+    }
 }
