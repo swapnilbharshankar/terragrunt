@@ -1,15 +1,38 @@
 common:
   name: "swapnil"
-
+  resource_group_name: "azure-free"
 vnet:
   address_space: ["10.0.0.0/16"]
   subnets:
-    private:
-    - name: "private-subnet1"
-      address_prefixes: ["10.0.1.0/24"]
     public:
-    - name: "public-subnet1"
-      address_prefixes: ["10.0.2.0/24"]
+      - name: "public-subnet1"
+        cidr: ["10.0.1.0/24"]
+      - name: "public-subnet2"
+        cidr: ["10.0.2.0/24"]
+    private:
+      - name: "private-subnet1"
+        cidr: ["10.0.3.0/24"]
+      - name: "private-subnet2"
+        cidr: ["10.0.4.0/24"]
 
-
-  
+virtual_machines:
+- name: "swapnil-vm"
+  size: "Standard_B2as_v2"
+  username: "adminuser"
+  subnet_name: "swapnil-public-subnet1"
+  public_key_path: "~/.ssh/id_ed25519.pub"
+  source_image_reference:
+    publisher: "Canonical"
+    offer: "0001-com-ubuntu-server-jammy"
+    sku: "22_04-lts"
+    version: "latest"
+- name: "swapnil-vm2"
+  size: "Standard_B2as_v2"
+  username: "adminuser"
+  subnet_name: "swapnil-public-subnet2"
+  public_key_path: "~/.ssh/id_ed25519.pub"
+  source_image_reference:
+    publisher: "Canonical"
+    offer: "0001-com-ubuntu-server-jammy"
+    sku: "22_04-lts"
+    version: "latest"

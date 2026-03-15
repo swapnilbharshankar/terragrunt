@@ -31,7 +31,7 @@ generate "backend" {
   contents  = <<EOF
 terraform {
   backend "local" {
-    path = "${get_terragrunt_dir()}/terraform.tfstate"
+    path = "/Users/swapnilbharshankar/dev/tfstate/azure/${local.module}/terraform.tfstate"
   }
 }
 EOF
