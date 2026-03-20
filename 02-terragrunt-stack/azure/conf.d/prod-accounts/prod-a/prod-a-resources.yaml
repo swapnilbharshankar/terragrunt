@@ -14,6 +14,13 @@ vnet:
         cidr: ["10.0.3.0/24"]
       - name: "private-subnet2"
         cidr: ["10.0.4.0/24"]
+  public_routes:
+    - name: "default-internet-route"
+      address_prefix: "0.0.0.0/0"
+      next_hop_type: "Internet"
+  private_routes:
+    - name: "default-onprem-route"
+      next_hop_type: "VnetLocal"
 
 virtual_machines:
 - name: "swapnil-vm"

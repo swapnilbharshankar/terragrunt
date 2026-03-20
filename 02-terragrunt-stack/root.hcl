@@ -31,18 +31,71 @@ generate "backend" {
   contents  = <<EOF
 terraform {
   backend "local" {
-    path = "/Users/swapnilbharshankar/dev/tfstate/azure/${local.module}/terraform.tfstate"
+    path = "/Users/swapnilbharshankar/dev/tfstate/${local.cloud}/${local.module}/terraform.tfstate"
   }
 }
 EOF
 }
 
+# Generate the provider file conditionally
 generate "provider" {
-    path       = "providers.tf"
-    if_exists  = "overwrite_terragrunt"
-    contents = <<EOF
+  path      = "provider.tf"
+  if_exists = "overwrite_terragrunt"
+  contents  = <<EOF
+%{ if local.cloud == "aws" }
 provider "aws" {
-    region = "${local.region}"
+  region = ${local.region}
+}
+%{ endif }
+
+%{ if local.cloud == "azure" }
+provider "azurerm" {
+  features {}
+}
+%{ endif }
+
+%{ if local.cloud == "gcp" }
+provider "google" {
+    region = ${local.region}
+}
+%{ endif }
+EOF
+}
+
+# Optional: Generate required_providers block to match
+generate "versions" {
+  path      = "versions.tf"
+  if_exists = "overwrite_terragrunt"
+  contents  = <<EOF
+terraform {
+  required_providers {
+    %{ if local.cloud == "aws" }
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+    %{ endif }
+    %{ if local.cloud == "azure" }
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 4.64.0"
+    }
+    %{ endif }
+    %{ if local.cloud == "gcp" }
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 4.64.0"
+    }
+    %{ endif }
+    http = {
+      source  = "hashicorp/http"
+      version = "~> 3.4"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.5"
+    }    
+  }
 }
 EOF
 }

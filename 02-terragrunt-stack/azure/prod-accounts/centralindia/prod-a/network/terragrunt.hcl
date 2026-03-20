@@ -1,5 +1,5 @@
 terraform {
-    source = "git::https://github.com/swapnilbharshankar/infrastructureascode-terraform//azure/network?ref=azure-vnet-0.0.3"
+    source = "git::https://github.com/swapnilbharshankar/infrastructureascode-terraform//azure/network?ref=main"
 }
 
 include "root" {
@@ -20,4 +20,6 @@ inputs = {
     address_space       = include.root.locals.env_vars.vnet.address_space
     public              = include.root.locals.env_vars.vnet.subnets.public
     private             = include.root.locals.env_vars.vnet.subnets.private
+    public_routes       = include.root.locals.env_vars.vnet.public_routes
+    private_routes      = include.root.locals.env_vars.vnet.private_routes
 }
